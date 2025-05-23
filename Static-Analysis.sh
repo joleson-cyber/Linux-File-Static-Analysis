@@ -1,5 +1,9 @@
 #! /bin/bash
 
+LOGFILE="analysis_$(date +%d%b%y_%H%M).txt"
+exec > >(tee -i "$LOGFILE")
+exec 2>&1
+
 # Automated malware triage script
 # Usage:  ./static-analysis.sh <filename>
 
