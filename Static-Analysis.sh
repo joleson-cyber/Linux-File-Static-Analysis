@@ -22,12 +22,12 @@ echo "File Type:"
 file "$FILENAME" | awk -F': ' '{print $2}'
 echo "------------------------------"
 echo "First 16 Bytes:"
-xxd -1 16 "$FILENAME" | awk -F ': ' '{print $2}'
+xxd -l 16 "$FILENAME" | awk -F ': ' '{print $2}'
 echo "------------------------------"
 echo "Hash of File:"
-MD5=$(md5sum "SFILENAME" | awk -F' ' '(print S1}')
-SHA1=$(sha1sum "SFILENAME" | awk -F' ' '(print S1}')
-SHA256=$(sha256sum "SFILENAME" | awk -F' ' '(print S1}')
+MD5=$(md5sum "$FILENAME" | awk -F' ' '(print S1}')
+SHA1=$(sha1sum "$FILENAME" | awk -F' ' '(print S1}')
+SHA256=$(sha256sum "$FILENAME" | awk -F' ' '(print S1}')
 echo -e "MD5:\t$MD5\nSHA1:\t$SHA1\nSHA256:\t$SHA256\n"
 #VirusTotal Test:  
 #https://www.virustotal.com/gui/file/3e26204eba90ebf94001773952658942d68746d5bf54ec9dbae52ddb9087e51b
