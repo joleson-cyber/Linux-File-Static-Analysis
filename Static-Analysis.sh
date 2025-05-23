@@ -33,10 +33,10 @@ echo -e "MD5:\t$MD5\nSHA1:\t$SHA1\nSHA256:\t$SHA256\n"
 #https://www.virustotal.com/gui/file/3e26204eba90ebf94001773952658942d68746d5bf54ec9dbae52ddb9087e51b
 echo -e " *** See VirusTotal Results ***\nhttps://www.virustotal.com/gui/file/$SHA256"
 echo -e "\n------------------------------"
-echo "File Entropy:
+echo "File Entropy:"
 ent "$FILENAME" | awk -F'= ' '/bits per byte/{print $2}'
 echo -e "\n------------------------------"
-echo "First Printable String in File:
+echo "First Printable String in File:"
 find -maxdepth 1 -type f -name "$(basename "$FILENAME")" -exec sh -c '
     for f; do
         printf "%s\n" "$(strings "$f" | head -n 1)"
