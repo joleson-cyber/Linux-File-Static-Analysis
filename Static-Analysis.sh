@@ -53,21 +53,28 @@ print_separator
 
 extract_suspicious_strings() {
     printf "\nStrings of Interest:\n"
-    local result
-    result=$(strings "$FILENAME" 2>/dev/null \
-        | grep -Ea 'MZ|PE|PE32|[Cc]opyright|[Uu][Pp][Xx]|[Aa][Ss][Pp][Aa][Cc][Kk]|[Ff][Ss][Gg]|[Mm][Ee][Ww]|[Pp]etite|[Pp][Ee][Cc]ompact|[Tt]hemida|[Vv][Mm]Protect|[Mm]press|[Nn][Ss]Pack|[Mm]orphine|y0da|[Ee][Xx][Ee]cryptor|[Ee]nigma|[Oo]bsidium|[Tt]elock|[Ww][Ww]Pack32|[Pp]ackman|[Pp][Ee]Bundle|[Kk]krunchy|[Bb]oomerang|[Uu]Pack|[Nn]eoLite|[Rr][Ll]Pack|[Pp]roCrypt|[Cc]runch|[Pp][Kk]Lite|[Ss]hrinker|DOS|cmd\.exe|powershell|wget|curl|Invoke-WebRequest|[Bb]ase64|[Bb]ase32|vbs|\.bat|This program cannot be run in DOS mode|CreateProcess|VirtualAlloc|WriteProcessMemory|GetProcAddress|LoadLibrary|kernel32\.dll|user32\.dll|ntdll\.dll|http://|https://|/tmp|/dev/shm|LD_PRELOAD|cron|crontab|systemd|init\.d|rc\.local|bash_history|\.bashrc|\.bash_profile|atd|inittab|\.ssh|rc[0-6]\.d|schtasks|reg add|runonce|RunServices|HKLM\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run|HKCU\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run|HKLM\\\\Software\\\\Wow6432node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run|AppData|Startup' \
-        | sort -u \
-        | grep -E '.{3,}')
-    
-    if [[ -z "$result" ]]; then
+
+    # Case-insensitive strings
+    local CI_MATCHES
+    CI_MATCHES=$(strings "$FILENAME" 2>/dev/null | grep -Eai \
+        'copyright|upx|aspack|fsg|mew|petite|pecompact|themida|vmprotect|mpress|nspack|morphine|y0da|execryptor|enigma|obsidium|telock|wwpack32|packman|pebundle|kkrunchy|boomerang|upack|neolite|rlpack|procrypt|crunch|pklite|shrinker|powershell|wget|curl|invoke-webrequest|base64|base32|vbs|\.bat|http://|https://|/tmp|/dev/shm|ld_preload|cron|crontab|systemd|init\.d|rc\.local|bash_history|\.bashrc|\.bash_profile|atd|inittab|\.ssh|rc[0-6]\.d|schtasks|reg add|runonce|runservices|appdata|startup' \
+        | sort -u)
+
+    # Case-sensitive strings
+    local CS_MATCHES
+    CS_MATCHES=$(strings "$FILENAME" 2>/dev/null | grep -Ea \
+        'MZ|PE|PE32|This program cannot be run in DOS mode|CreateProcess|VirtualAlloc|WriteProcessMemory|GetProcAddress|LoadLibrary|kernel32\.dll|user32\.dll|ntdll\.dll|cmd\.exe|HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run|HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run|HKLM\\Software\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Run' \
+        | sort -u)
+
+    if [[ -z "$CI_MATCHES" && -z "$CS_MATCHES" ]]; then
         printf "No suspicious strings found.\n"
     else
-        printf "%s\n" "$result"
+        printf "%s\n" "$CI_MATCHES"
+        printf "%s\n" "$CS_MATCHES"
     fi
+
     print_separator
 }
+
 extract_suspicious_strings
-#strings "$FILENAME" | egrep -ai "Copyright|UPX|ASPack|FSG|MEW|Petite|PECompact|Themida|VMProtect|MPRESS|NSPack|Morphine|y0da|EXEcryptor|Enigma|Obsidium|Telock|WWPack32|Packman|PEBundle|kkrunchy|Boomerang|UPack|NeoLite|RLPack|ProCrypt|Crunch|PKLite|Shrinker|DOS|cmd.exe|powershell|wget|curl|Invoke-WebRequest|Base64|Base32|vbs|.bat|MZ|PE|PE32|This program cannot be run in DOS mode|CreateProcess|VirtualAlloc|WriteProcessMemory|GetProcAddress|LoadLibrary|kernel32.dll|user32.dll|ntdll.dll|http://|https://|/tmp|/dev/shm|LD_PRELOAD|cron|crontab|systemd|init.d|rc.local|bash_history|.bashrc|.bash_profile|atd|inittab|.ssh|rc0.d|rc1.d|rc2.d|rc3.d|rc4.d|rc5.d|rc6.d|schtasks|reg add|runonce|RunServices|HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run|HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run|HKLM\\Software\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Run|AppData|Startup" | \
-#| sort -u \
-#| grep -E '.{4,}')  # Filter short strings like 'LPeI'
-#print_separator
+print_separator
