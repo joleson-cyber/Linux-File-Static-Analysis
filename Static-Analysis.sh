@@ -47,7 +47,6 @@ find -maxdepth 1 -type f -name "$(basename "$FILENAME")" -exec sh -c '
         printf "%s\n" "$(strings "$f" | head -n 1)"
     done sh echo
 ' sh {} +
-print_separator
 # Common strings found in malware, including indicators of compression, obfuscation,
 # suspicious process calls, and known file write or persistence locations.
 
