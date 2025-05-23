@@ -52,7 +52,7 @@ print_separator
 # suspicious process calls, and known file write or persistence locations.
 
 extract_suspicious_strings() {
-    printf "\nStrings of Interest:\n"
+    printf "Strings of Interest:\n\n"
 
     # Case-insensitive strings
     local CI_MATCHES
@@ -77,4 +77,3 @@ extract_suspicious_strings() {
 }
 
 extract_suspicious_strings
-print_separator
