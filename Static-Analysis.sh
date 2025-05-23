@@ -48,17 +48,16 @@ find -maxdepth 1 -type f -name "$(basename "$FILENAME")" -exec sh -c '
     done sh echo
 ' sh {} +
 print_separator
-echo "Strings of interest:"
 # Common strings found in malware, including indicators of compression, obfuscation,
 # suspicious process calls, and known file write or persistence locations.
 
 extract_suspicious_strings() {
-    printf "\nStrings of interest:\n"
+    printf "\nStrings of Interest:\n"
     local result
     result=$(strings "$FILENAME" 2>/dev/null \
-        | grep -Eai 'Copyright|UPX|ASPack|FSG|MEW|Petite|PECompact|Themida|VMProtect|MPRESS|NSPack|Morphine|y0da|EXEcryptor|Enigma|Obsidium|Telock|WWPack32|Packman|PEBundle|kkrunchy|Boomerang|UPack|NeoLite|RLPack|ProCrypt|Crunch|PKLite|Shrinker|DOS|cmd.exe|powershell|wget|curl|Invoke-WebRequest|Base64|Base32|vbs|.bat|MZ|PE|PE32|This program cannot be run in DOS mode|CreateProcess|VirtualAlloc|WriteProcessMemory|GetProcAddress|LoadLibrary|kernel32.dll|user32.dll|ntdll.dll|http://|https://|/tmp|/dev/shm|LD_PRELOAD|cron|crontab|systemd|init.d|rc.local|bash_history|.bashrc|.bash_profile|atd|inittab|.ssh|rc0.d|rc1.d|rc2.d|rc3.d|rc4.d|rc5.d|rc6.d|schtasks|reg add|runonce|RunServices|HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run|HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run|HKLM\\Software\\Wow6432node\\Microsoft\\Windows\\CurrentVersion\\Run|AppData|Startup' \
+        | grep -Ea 'MZ|PE|PE32|[Cc]opyright|[Uu][Pp][Xx]|[Aa][Ss][Pp][Aa][Cc][Kk]|[Ff][Ss][Gg]|[Mm][Ee][Ww]|[Pp]etite|[Pp][Ee][Cc]ompact|[Tt]hemida|[Vv][Mm]Protect|[Mm]press|[Nn][Ss]Pack|[Mm]orphine|y0da|[Ee][Xx][Ee]cryptor|[Ee]nigma|[Oo]bsidium|[Tt]elock|[Ww][Ww]Pack32|[Pp]ackman|[Pp][Ee]Bundle|[Kk]krunchy|[Bb]oomerang|[Uu]Pack|[Nn]eoLite|[Rr][Ll]Pack|[Pp]roCrypt|[Cc]runch|[Pp][Kk]Lite|[Ss]hrinker|DOS|cmd\.exe|powershell|wget|curl|Invoke-WebRequest|[Bb]ase64|[Bb]ase32|vbs|\.bat|This program cannot be run in DOS mode|CreateProcess|VirtualAlloc|WriteProcessMemory|GetProcAddress|LoadLibrary|kernel32\.dll|user32\.dll|ntdll\.dll|http://|https://|/tmp|/dev/shm|LD_PRELOAD|cron|crontab|systemd|init\.d|rc\.local|bash_history|\.bashrc|\.bash_profile|atd|inittab|\.ssh|rc[0-6]\.d|schtasks|reg add|runonce|RunServices|HKLM\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run|HKCU\\\\Software\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run|HKLM\\\\Software\\\\Wow6432node\\\\Microsoft\\\\Windows\\\\CurrentVersion\\\\Run|AppData|Startup' \
         | sort -u \
-        | grep -E '.{4,}')  # Filter short strings like 'LPeI'
+        | grep -E '.{5,}')  # Filter short strings like 'LPeI'
     
     if [[ -z "$result" ]]; then
         printf "No suspicious strings found.\n"
