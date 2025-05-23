@@ -19,15 +19,15 @@ echo "--------------------------------------------"
 echo "Malware - Static Analysis Report for: $FILENAME"
 echo -e "/n--------------------------------------------"
 echo "File Type:" 
-file "$FILENAME" | awk -F': ' '{print $2}'
+file "$FILENAME" | /bin/awk -F': ' '{print $2}'
 echo -e "/n------------------------------"
 echo "First 16 Bytes:"
-xxd -l 16 "$FILENAME" | awk -F ': ' '{print $2}'
+xxd -l 16 "$FILENAME" | /bin/awk -F ': ' '{print $2}'
 echo -e "/n------------------------------"
 echo "Hash of File:"
-MD5=$(md5sum "$FILENAME" | awk -F' ' "{print $1}")
-SHA1=$(sha1sum "$FILENAME" | awk -F' ' "{print $1}")
-SHA256=$(sha256sum "$FILENAME" | awk -F' ' "{print $1}")
+MD5=$(md5sum "$FILENAME" | cut -d ' ' -f1)
+SHA1=$(sha1sum "$FILENAME" | cut -d ' ' -f1)
+SHA256=$(sha256sum "$FILENAME" | | cut -d ' ' -f1)
 echo -e "MD5:\t$MD5\nSHA1:\t$SHA1\nSHA256:\t$SHA256\n"
 #VirusTotal Test:  
 #https://www.virustotal.com/gui/file/3e26204eba90ebf94001773952658942d68746d5bf54ec9dbae52ddb9087e51b
