@@ -21,8 +21,8 @@ print_separator() {
 }
 
 #Beginning of Script Output
-echo "Malware - Static Analysis Report for: $FILENAME"
-echo -e "\nOutput saved to:  ./$LOGFILE"
+echo "Static Analysis Report for: $FILENAME"
+echo -e "\nOutput saved to: ./$LOGFILE"
 
 print_separator
 echo "File Type:"
