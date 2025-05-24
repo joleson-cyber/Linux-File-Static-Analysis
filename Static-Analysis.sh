@@ -1,12 +1,11 @@
 #! /bin/bash
+# Automated malware triage script
+# Usage:  ./static-analysis.sh <filename>
 
 #Print content to terminal & Ouput to a file in current directory
 LOGFILE="static-Analysis_$(date +%d%b%y_%H%M).txt" #./static-Analysis_24May25_1001.txt
 exec > >(tee -i "$LOGFILE")
 exec 2>&1
-
-# Automated malware triage script
-# Usage:  ./static-analysis.sh <filename>
 
 # Check if a filename was provided
 if [ -z "$1" ]; then
@@ -21,6 +20,7 @@ print_separator() {
     printf '%*s\n' "$(tput cols)" '' | tr ' ' '-'
 }
 
+#Beginning of Script Output
 echo "Malware - Static Analysis Report for: $FILENAME"
 echo -e "\nOutput saved to:  ./$LOGFILE"
 
