@@ -29,7 +29,7 @@ echo "File Type:"
 file "$FILENAME" | /bin/awk -F': ' '{print $2}'
 
 print_separator
-echo "First 16 Bytes:"
+echo "Magic Bytes (First 16 Bytes):"
 xxd -l 16 "$FILENAME" | /bin/awk -F ': ' '{print $2}'
 
 print_separator
